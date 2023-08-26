@@ -1,0 +1,3 @@
+SELECT salesorderid, subtotal AS total_orden
+FROM salesorderheader
+WHERE CAST(salesorderid AS VARCHAR) LIKE '44541%';

@@ -1,0 +1,4 @@
+SELECT st.name, COUNT(cus.customerid) AS cant_clientes
+FROM customer cus
+JOIN salesterritory st ON cus.territoryid = st.territoryid
+GROUP BY st.name;

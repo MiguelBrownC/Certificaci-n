@@ -1,0 +1,104 @@
+{{> navbar_inside}}
+
+<div class="container">
+  <div class="form br-3">
+    <div class="form-header p-2 text-primary">
+      Publicar
+    </div>
+    <form id="new-publication">
+      <div class="row">
+        <div class="col-6 mt-2">
+          <div class="input-group flex-nowrap">
+            <span class="input-group-text" id="addon-wrapping">Nombre Producto:</span>
+            <input type="text" class="form-control" placeholder="nombre" aria-label="nombre" id="producto" required aria-describedby="addon-wrapping">
+          </div>
+        </div>
+        <div class="col-6 mt-2">
+          <div class="input-group flex-nowrap">
+            <span class="input-group-text" id="addon-wrapping">Foto Producto:</span>
+            <input type="url" required class="form-control" placeholder="nombre" aria-label="nombre" id="foto" required aria-describedby="addon-wrapping">
+          </div>
+        </div>
+        <div class="col-6 mt-2">
+          <div class="input-group flex-nowrap">
+            <span class="input-group-text" id="addon-wrapping">Precio</span>
+            <input type="number" required class="form-control" placeholder="nombre" aria-label="precio" id="precio" required aria-describedby="addon-wrapping" min="0">
+          </div>
+        </div>
+        <div class="col-6 mt-2">
+          <div class="input-group flex-nowrap">
+            <span class="input-group-text" id="addon-wrapping">Cantidad</span>
+            <input type="number" required class="form-control" placeholder="cantidad" min="1" aria-label="nombre" id="stockInicial" required aria-describedby="addon-wrapping">
+          </div>
+        </div>
+        <div class="col-12 mt-2">
+          <div class="input-group flex-nowrap">
+            <span class="input-group-text" id="addon-wrapping">Descripción</span>
+            <textarea name="descripcion" id="descripcion" required class="w-100" rows="3"></textarea>
+          </div>
+        </div>
+
+        <div class="col-12 mt-4">
+          <div class="d-grid gap-2">
+            <input class="btn btn-primary" type="submit" value="Publicar">
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<script>
+  
+  async function init() {
+    // 1. Recupero el token
+    const token = localStorage.getItem('token')
+
+    // 2. Voy a buscar mis datos
+    const {data} = await axios.get('/api/auth/my', {
+      headers: {
+        authorization: token
+      }
+    })
+
+    console.log(data)
+    //document.querySelector('#nombre').innerHTML = data.nombre
+  }
+  init()
+
+  const producto = document.querySelector('#producto')
+  const precio = document.querySelector('#precio')
+  const descripcion = document.querySelector('#descripcion')
+  const stockInicial = document.querySelector('#stockInicial')
+  const foto = document.querySelector('#foto')
+
+
+  document.querySelector('#new-publication').addEventListener('submit', async function (e) {
+    // 1. Prevenimos que se envie el formulario
+    e.preventDefault()
+    console.log('wefds')
+
+    // 2. Obtenemos el token
+    const token = localStorage.getItem('token')
+
+    // 3. Capturamos los valores, y mandamos un POST
+    const {data} = axios.post('/api/publicaciones', 
+      {
+        producto: producto.value,
+        foto: foto.value,
+        stockInicial: stockInicial.value,
+        descripcion: descripcion.value,
+        precio: precio.value
+      },
+      {
+        headers: {
+          authorization: token
+        }
+      },
+    )
+
+    alert('Producto Agregado')
+  })
+
+</script>
